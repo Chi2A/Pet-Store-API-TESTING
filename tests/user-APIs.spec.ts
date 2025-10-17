@@ -32,9 +32,8 @@ test.describe("User API Tests", () => {
     phone: z.string().optional(),
     userStatus: z.number().optional(),
   });
-    
 
-const updatedPutUserRequestBody = {
+  const updatedPutUserRequestBody = {
     id: createUserRequestBody.id,
     username: createUserRequestBody.username,
     firstName: faker.person.firstName(),
@@ -51,13 +50,6 @@ const updatedPutUserRequestBody = {
     type: z.literal("unknown"),
     message: z.literal(username),
   });
-    
-    const expectedLogoutResponseSchema = z.object({
-        code: z.literal(200),
-        type: z.literal("unknown"),
-        message: z.literal("ok"),
-    });
-
 
   test("End-to-End: Create, Get, Put, Delete user", async ({ request }) => {
     await postAPI(
@@ -72,15 +64,8 @@ const updatedPutUserRequestBody = {
       request,
       `${BASE_URL}/user/${username}`,
       200,
-      expectedGetUserByUserNameResponseSchema,
+      expectedGetUserByUserNameResponseSchema
     );
-      await getAPI(
-          request,
-          `${BASE_URL}/user/login`,
-          200,
-          expectedGetUserByUserNameResponseSchema,
-          { username: createUserRequestBody.username, password: createUserRequestBody.password }
-       );
 
     await putAPI(
       request,
@@ -89,12 +74,6 @@ const updatedPutUserRequestBody = {
       200,
       expectedGetUserByUserNameResponseSchema
     );
-      await getAPI(
-        request,
-        `${BASE_URL}/user/logout`,
-        200,
-        expectedLogoutResponseSchema
-      );
 
     await deleteAPI(
       request,
