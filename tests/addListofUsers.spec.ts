@@ -43,4 +43,31 @@ test.describe("User API Tests", () => {
             expectedCreateListOfUsersResponseSchema,
         );
     });
+    test("Create list of users with list", async ({ request }) => {
+        const listOfUsersRequestBody = [
+            createUserRequestBody,
+            {
+                id: faker.number.int({ min: 1, max: 1000 }),
+                username: "TestAlina2626@-delete-after",
+                firstName: faker.person.firstName(),
+                lastName: faker.person.lastName(),
+                email: faker.internet.email(),
+                password: faker.internet.password(),
+                phone: faker.phone.number(),
+                userStatus: faker.number.int({ min: 1, max: 10 }),
+            },
+        ];
+        const expectedCreateListOfUsersResponseSchema = z.object({
+            code: z.literal(200),
+            type: z.literal("unknown"),
+            message: z.literal("ok"),
+        });
+        await postAPI(
+            request,
+            `${BASE_URL}/user/createWithList`,
+            listOfUsersRequestBody,
+            200,
+            expectedCreateListOfUsersResponseSchema,
+        );
+    });
 });
