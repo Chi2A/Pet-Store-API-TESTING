@@ -14,7 +14,8 @@ export async function getAPI(
   request: APIRequestContext,
   url: string,
   expectedStatusCode: number,
-  expectedSchema: ZodTypeAny,
+    expectedSchema: ZodTypeAny,
+  parameters: Record<string, any> = {},
   retryCount: number = 5 // default retry count is 5, if not provided, OPTIONAL parameter
 ): Promise<APIResponse> {
   // retry logic because API is not working properly, it will retry 5 times before failing the test
