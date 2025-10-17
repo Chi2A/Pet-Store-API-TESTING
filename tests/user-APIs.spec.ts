@@ -45,12 +45,18 @@ const updatedPutUserRequestBody = {
     userStatus: faker.number.int({ min: 1, max: 10 }),
   };
 
-  const userName = createUserRequestBody.username;
+  const username = createUserRequestBody.username;
   const expectedDeleteUserByUserNameResponseSchema = z.object({
     code: z.literal(200),
     type: z.literal("unknown"),
-    message: z.literal(createUserRequestBody.username),
+    message: z.literal(username),
   });
+    
+    const expectedLogoutResponseSchema = z.object({
+        code: z.literal(200),
+        type: z.literal("unknown"),
+        message: z.literal("ok"),
+    });
 
 
   test("End-to-End: Create, Get, Put, Delete user", async ({ request }) => {
@@ -64,22 +70,35 @@ const updatedPutUserRequestBody = {
 
     await getAPI(
       request,
-      `${BASE_URL}/user/${userName}`,
+      `${BASE_URL}/user/${username}`,
       200,
-      expectedGetUserByUserNameResponseSchema
+      expectedGetUserByUserNameResponseSchema,
     );
+      await getAPI(
+          request,
+          `${BASE_URL}/user/login`,
+          200,
+          expectedGetUserByUserNameResponseSchema,
+          { username: createUserRequestBody.username, password: createUserRequestBody.password }
+       );
 
     await putAPI(
       request,
-      `${BASE_URL}/user/${userName}`,
+      `${BASE_URL}/user/${username}`,
       updatedPutUserRequestBody,
       200,
       expectedGetUserByUserNameResponseSchema
     );
+      await getAPI(
+        request,
+        `${BASE_URL}/user/logout`,
+        200,
+        expectedLogoutResponseSchema
+      );
 
     await deleteAPI(
       request,
-      `${BASE_URL}/user/${userName}`,
+      `${BASE_URL}/user/${username}`,
       200,
       expectedDeleteUserByUserNameResponseSchema
     );
