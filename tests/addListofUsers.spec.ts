@@ -5,16 +5,22 @@ import { getAPI, postAPI, putAPI, deleteAPI } from "../utils/apiCallHelper";
 
 test.describe("User API Tests", () => {
   const BASE_URL = `${process.env.BASE_URL}${process.env.API_VERSION}`;
+  let createRandomUsers: any[];
 
-  const generateUser = () => ({
-    id: faker.number.int({ min: 1, max: 1000 }),
-    username: "TestAlina2626@-delete-after",
-    firstName: faker.person.firstName(),
-    lastName: faker.person.lastName(),
-    email: faker.internet.email(),
-    password: faker.internet.password(),
-    phone: faker.phone.number(),
-    userStatus: faker.number.int({ min: 1, max: 10 }),
+  test.beforeEach(() => {
+    createRandomUsers = [];
+    for (let i = 0; i < 4; i++) {
+      createRandomUsers.push({
+        id: faker.number.int({ min: 1, max: 1000 }),
+        username: "TestAlina2626@-delete-after",
+        firstName: faker.person.firstName(),
+        lastName: faker.person.lastName(),
+        email: faker.internet.email(),
+        password: faker.internet.password(),
+        phone: faker.phone.number(),
+        userStatus: faker.number.int({ min: 1, max: 10 }),
+      });
+    }
   });
 
   const responseSchema = z.object({
@@ -27,7 +33,7 @@ test.describe("User API Tests", () => {
     await postAPI(
       request,
       `${BASE_URL}/user/createWithArray`,
-      [generateUser(), generateUser()],
+      createRandomUsers,
       200,
       responseSchema
     );
@@ -37,7 +43,7 @@ test.describe("User API Tests", () => {
     await postAPI(
       request,
       `${BASE_URL}/user/createWithList`,
-      [generateUser(), generateUser()],
+      createRandomUsers,
       200,
       responseSchema
     );
