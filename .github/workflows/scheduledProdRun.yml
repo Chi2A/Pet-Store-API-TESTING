@@ -1,8 +1,8 @@
 name: Scheduled Prod Run
 on:
   schedule:
-   # Runs at 2 PM CST (8 PM UTC) every day
-    - cron: "0 20 * * *"
+   # Runs at 8 PM CST (2 AM UTC) every day
+    - cron: "0 2 * * *"
   workflow_dispatch: # Allows manual trigger
 
 jobs:
