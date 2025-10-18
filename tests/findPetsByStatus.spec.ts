@@ -40,7 +40,7 @@ test.describe("Find Pets", () => {
             `${BASE_URL}/pet/findByTags`,
             200,
             expectedFindPetsByStatusResponseSchema,
-            { tags: ["dog", "cute"] }
+            { tags: ["dog", "cute", "brown"] }
         );
     });     
 });

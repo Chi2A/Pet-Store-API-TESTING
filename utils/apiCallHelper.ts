@@ -7,6 +7,7 @@ import { ZodTypeAny } from "zod";
  * @param url -> the complete URL of the API endpoint
  * @param expectedStatusCode  -> expected status code of the API response
  * @param expectedSchema  -> expected schema of the API response
+ * @param parameters  -> query parameters to be sent in the API call (Optional)
  * @param retryCount  -> number of times to retry the API call in case of failure (Optional, default is 5   )
  * @returns  -> the API response
  */
