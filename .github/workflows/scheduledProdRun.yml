@@ -1,0 +1,46 @@
+name: Scheduled Prod Run
+on:
+  schedule:
+    # Runs at 8 PM CST (2 AM UTC) every day
+    - cron: "0 2 * * *"
+  workflow_dispatch: # Allows manual trigger
+
+jobs:
+  api-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "lts/*"
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run Playwright Tests
+        run: npx playwright test
+        
+        env:
+          BASE_URL: "https://petstore.swagger.io"
+          API_VERSION: "/v2"  
+         
+
+      - name: Upload Playwright Report
+        if: always()
+        with:
+          name: playwright-report-${{ github.run_number }}
+          path: playwright-report/
+          retention-days: 30
+
+      - name: Upload Test Results
+        if: always()
+        with:
+          name: test-results-${{ github.run_number }}
+          path: test-results/
+          retention-days: 30
+
+     
