@@ -5,38 +5,38 @@ import { getAPI, postAPI, putAPI, deleteAPI } from "../utils/apiCallHelper";
 
 test.describe("Store API Tests", () => {
   const BASE_URL = `${process.env.BASE_URL}${process.env.API_VERSION}`;
-  const orderId = 1380;
+
   const placeOrderRequestBody = {
     id: faker.number.int({ min: 1, max: 100000 }),
     petId: faker.number.int({ min: 0, max: 1000 }),
     quantity: faker.number.int({ min: 1, max: 10 }),
     shipDate: faker.date.future().toISOString(),
-    status: faker.helpers.arrayElement([ "delivered"]),
+    status: faker.helpers.arrayElement(["delivered", "pending", "approved"]),
     complete: faker.datatype.boolean(),
   };
 
   const expectedPlaceOrderResponseSchema = z.object({
-    id: z.number().optional(),
-    petId: z.number().optional(),
-    quantity: z.number().optional(),
-    shipDate: z.string().optional(),
-    status: z.enum([ "delivered"]).optional(),
-    complete: z.boolean().optional(),
+    id: z.number(),
+    petId: z.number(),
+    quantity: z.number(),
+    shipDate: z.string(),
+    status: z.enum(["delivered", "pending", "approved"]),
+    complete: z.boolean(),
   });
 
   const expectedGetOrderByIdResponseSchema = z.object({
-    id: z.number().optional(),
-    petId: z.number().optional(),
-    quantity: z.number().optional(),
-    shipDate: z.string().optional(),
-    status: z.enum([ "delivered"]).optional(),
-    complete: z.boolean().optional(),
+    id: z.number(),
+    petId: z.number(),
+    quantity: z.number(),
+    shipDate: z.string(),
+    status: z.enum(["delivered", "pending", "approved"]),
+    complete: z.boolean(),
   });
 
   const expectedDeleteOrderByIdResponseSchema = z.object({
     code: z.literal(200),
     type: z.literal("unknown"),
-    message: z.literal(orderId.toString()),
+    message: z.literal(placeOrderRequestBody.id.toString()),
   });
 
   test("End-to-End: Place, Get, Delete order", async ({ request }) => {
@@ -50,13 +50,13 @@ test.describe("Store API Tests", () => {
 
     await getAPI(
       request,
-      `${BASE_URL}/store/order/${orderId}`,
+      `${BASE_URL}/store/order/${placeOrderRequestBody.id}`,
       200,
       expectedGetOrderByIdResponseSchema
     );
     await deleteAPI(
       request,
-      `${BASE_URL}/store/order/${orderId}`,
+      `${BASE_URL}/store/order/${placeOrderRequestBody.id}`,
       200,
       expectedDeleteOrderByIdResponseSchema
     );
