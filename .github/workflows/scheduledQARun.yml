@@ -1,7 +1,7 @@
 name: Scheduled QA Run
 on:
   schedule:
-  # Runs at 8 PM CST (2 AM UTC) every day
+# Runs at 8 PM CST (2 AM UTC) every day
     - cron: "0 2 * * *"
   workflow_dispatch: # Allows manual trigger
 
