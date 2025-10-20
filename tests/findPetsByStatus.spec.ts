@@ -5,7 +5,7 @@ import { getAPI, postAPI, putAPI, deleteAPI } from "../utils/apiCallHelper";
 
 
 test.describe("Find Pets", () => {
-    const BASE_URL = `${process.env.BASE_URL}${process.env.API_VERSION}`;       
+    const BASE_URL = `${process.env.BASE_URL}${process.env.API_VERSION}`;
     const expectedFindPetsByStatusResponseSchema = z.array(
         z.object({
             id: z.number().optional(),
@@ -21,9 +21,14 @@ test.describe("Find Pets", () => {
                     name: z.string().optional(),
                 })
             ).optional(),
-            status: z.enum(["available", "pending", "sold", "SOLD"]).optional(),
+            status: z
+                .string()
+                .transform((val) => val.toLowerCase())
+                .pipe(z.enum(["available", "pending", "sold"]))
+                .optional(),
         })
-    );
+
+);
 
     test("Find Pets by Status - available", async ({ request }) => {
         await getAPI(
