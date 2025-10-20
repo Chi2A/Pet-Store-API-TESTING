@@ -20,7 +20,7 @@ test.describe("Add Pet to the Store API Tests", () => {
         name: faker.word.noun(),
       },
     ],
-    status: faker.helpers.arrayElement(["available", "pending", "sold"]),
+    status: faker.helpers.arrayElement(["available", "pending", "sold", "SOLD"]),
   };
 
   const expectedAddPetResponseSchema = z.object({
@@ -41,7 +41,7 @@ test.describe("Add Pet to the Store API Tests", () => {
         })
       )
       .optional(),
-    status: z.enum(["available", "pending", "sold"]).optional(),
+    status: z.enum(["available", "pending", "sold", "SOLD"]).optional(),
   });
 
   const getPetRequestBody = {
@@ -62,7 +62,7 @@ test.describe("Add Pet to the Store API Tests", () => {
         name: faker.word.noun(),
       },
     ],
-    status: faker.helpers.arrayElement(["available", "pending", "sold"]),
+    status: faker.helpers.arrayElement(["available", "pending", "sold", "SOLD"]),
   };
   const updatedPutExistingPetRequestSchema = z.object({
     id: z.number().optional(),
@@ -82,7 +82,7 @@ test.describe("Add Pet to the Store API Tests", () => {
         })
       )
       .optional(),
-    status: z.enum(["sold"]).optional(),
+    status: z.enum(["sold", "SOLD"]).optional(),
   });
   const expectedDeletePetByIdResponseSchema = z.object({
     code: z.literal(200),
