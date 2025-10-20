@@ -64,26 +64,27 @@ test.describe("Add Pet to the Store API Tests", () => {
     ],
     status: faker.helpers.arrayElement(["available", "pending", "sold"]),
   };
-  const updatedPutExistingPetRequestSchema = z.object({
-    id: z.number().optional(),
-    category: z
-      .object({
+const updatedPutExistingPetRequestSchema = z.object({
+  id: z.number().optional(),
+  category: z
+    .object({
+      id: z.number().optional(),
+      name: z.string().optional(),
+    })
+    .optional(),
+  name: z.string().optional(),
+  photoUrls: z.array(z.string().url()).optional(),
+  tags: z
+    .array(
+      z.object({
         id: z.number().optional(),
         name: z.string().optional(),
       })
-      .optional(),
-    name: z.string().optional(),
-    photoUrls: z.array(z.string().url()).optional(),
-    tags: z
-      .array(
-        z.object({
-          id: z.number().optional(),
-          name: z.string().optional(),
-        })
-      )
-      .optional(),
-    status: z.enum(["available", "pending", "sold"]).optional(),
-  });
+    )
+    .optional(),
+  // 👇 Allow all statuses your API can return
+  status: z.enum(["available", "pending", "sold", "SOLD"]).optional(),
+});
 
   const expectedDeletePetByIdResponseSchema = z.object({
     code: z.literal(200),
