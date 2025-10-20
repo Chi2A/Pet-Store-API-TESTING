@@ -21,7 +21,7 @@ test.describe("Find Pets", () => {
                     name: z.string().optional(),
                 })
             ).optional(),
-            status: z.enum(["available", "pending", "sold"]).optional(),
+            status: z.enum(["available", "pending", "sold", "SOLD"]).optional(),
         })
     );
 
