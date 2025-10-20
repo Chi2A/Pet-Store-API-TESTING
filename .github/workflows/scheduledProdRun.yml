@@ -28,7 +28,6 @@ jobs:
           BASE_URL: "https://petstore.swagger.io"
           API_VERSION: "/v2"  
          
-
       - name: Upload Playwright Report
         uses: actions/upload-artifact@v4
         if: always()
